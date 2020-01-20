@@ -12,6 +12,7 @@ import Text from './Text';
 import { namespaces } from '../../utils/namespaces';
 import map_children from './shared/map_children';
 import { dimensions, start_newline } from '../../utils/patterns';
+import { isBindingContenteditable, getContenteditableAttr } from '../utils/contenteditable';
 import fuzzymatch from '../../utils/fuzzymatch';
 import list from '../../utils/list';
 import Let from './Let';
@@ -754,13 +755,9 @@ export default class Element extends Node {
 					return component.error(binding, compiler_errors.invalid_binding_on(binding.name, `void elements like <${this.name}>. Use a wrapper element instead`));
 				}
 			} else if (
-				name === 'textContent' ||
-				name === 'innerHTML'
+				isBindingContenteditable(binding)
 			) {
-				const contenteditable = this.attributes.find(
-					(attribute: Attribute) => attribute.name === 'contenteditable'
-				);
-
+				const contenteditable = getContenteditableAttr(this);
 				if (!contenteditable) {
 					return component.error(binding, compiler_errors.missing_contenteditable_attribute);
 				} else if (contenteditable && !contenteditable.is_static) {
