@@ -1,7 +1,7 @@
 import { is_void } from '../../../../shared/utils/names';
 import { get_attribute_expression, get_attribute_value, get_class_attribute_value } from './shared/get_attribute_value';
 import { boolean_attributes } from '../../../../shared/boolean_attributes';
-import { isContenteditable, isBindingContenteditable } from '../../utils/contenteditable';
+import { isContenteditable, isNameContenteditable } from '../../utils/contenteditable';
 import Renderer, { RenderOptions } from '../Renderer';
 import Binding from '../../nodes/Binding';
 import Element from '../../nodes/Element';
@@ -140,7 +140,7 @@ export default function (node: Element, renderer: Renderer, options: RenderOptio
 				renderer.add_expression(x`${condition} ? @add_attribute("checked", true, 1) : ""`);
 			}
 			// TODO server-render group bindings
-		} else if (contenteditable && isBindingContenteditable(binding)) {
+		} else if (contenteditable && isNameContenteditable(name)) {
 			node_contents = expression.node;
 
 			// TODO where was this used?
