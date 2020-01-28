@@ -11,8 +11,8 @@ import StyleDirective from './StyleDirective';
 import Text from './Text';
 import { namespaces } from '../../utils/namespaces';
 import map_children from './shared/map_children';
+import { is_name_contenteditable, get_contenteditable_attr } from '../utils/contenteditable';
 import { dimensions, start_newline } from '../../utils/patterns';
-import { isNameContenteditable, getContenteditableAttr } from '../utils/contenteditable';
 import fuzzymatch from '../../utils/fuzzymatch';
 import list from '../../utils/list';
 import Let from './Let';
@@ -754,10 +754,8 @@ export default class Element extends Node {
 				} else if (is_void(this.name)) {
 					return component.error(binding, compiler_errors.invalid_binding_on(binding.name, `void elements like <${this.name}>. Use a wrapper element instead`));
 				}
-			} else if (
-				isNameContenteditable(name)
-			) {
-				const contenteditable = getContenteditableAttr(this);
+			} else if (is_name_contenteditable(name)) {
+				const contenteditable = get_contenteditable_attr(this);
 				if (!contenteditable) {
 					return component.error(binding, compiler_errors.missing_contenteditable_attribute);
 				} else if (contenteditable && !contenteditable.is_static) {
