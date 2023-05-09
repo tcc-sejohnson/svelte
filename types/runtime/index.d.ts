@@ -1,3 +1,4 @@
+import './ambient.js';
 export {
 	onMount,
 	onDestroy,
@@ -11,4 +12,10 @@ export {
 	createEventDispatcher,
 	SvelteComponentDev as SvelteComponent,
 	SvelteComponentTyped
+} from './internal/index.js';
+export type {
+	ComponentType,
+	ComponentConstructorOptions,
+	ComponentProps,
+	ComponentEvents
 } from './internal/index.js';

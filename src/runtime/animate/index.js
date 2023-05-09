@@ -2,10 +2,7 @@ import { cubicOut } from '../easing/index.js';
 import { is_function } from '../internal/index.js';
 
 /**
- * @param {Element} node
- * @param {{ from: DOMRect; to: DOMRect }} fromTo
- * @param {import('.').FlipParams} params
- * @returns {import('.').AnimationConfig}
+ * @type {import('types/animate').flip}
  */
 export function flip(node, { from, to }, params = {}) {
 	const style = getComputedStyle(node);

@@ -10,10 +10,7 @@ import {
 const subscriber_queue = [];
 
 /**
- * Creates a `Readable` store that allows reading by subscription.
- * @param {T} value  initial value
- * @param {StartStopNotifier<T>} start  undefined
- * @returns {Readable<T>}
+ * @type {import('types/store').readable}
  */
 export function readable(value, start) {
 	return {
@@ -22,17 +19,15 @@ export function readable(value, start) {
 }
 
 /**
- * Create a `Writable` store that allows both updating and reading by subscription.
- * @param {T} value  initial value
- * @param {StartStopNotifier<T>} start  undefined
- * @returns {import("/Users/elliottjohnson/dev/sveltejs/svelte/index.ts-to-jsdoc").Writable<T>}
+ * @type {import('types/store').writable}
  */
 export function writable(value, start = noop) {
-	/** @type {Unsubscriber} */
+	/** @type {import('types/store').Unsubscriber} */
 	let stop;
-	/** @type {Set<SubscribeInvalidateTuple<T>>} */
+	/** @type {Set<import('types/store').SubscribeInvalidateTuple<any>>} */
 	const subscribers = new Set();
-	/** @param {T} new_value
+	/**
+	 * @param {any} new_value
 	 * @returns {void}
 	 */
 	function set(new_value) {
@@ -55,19 +50,19 @@ export function writable(value, start = noop) {
 		}
 	}
 	/**
-	 * @param {Updater<T>} fn
+	 * @param {import('types/store').Updater<any>} fn
 	 * @returns {void}
 	 */
 	function update(fn) {
 		set(fn(value));
 	}
 	/**
-	 * @param {Subscriber<T>} run
-	 * @param {Invalidator<T>} invalidate
-	 * @returns {import("/Users/elliottjohnson/dev/sveltejs/svelte/index.ts-to-jsdoc").Unsubscriber}
+	 * @param {import('types/store').Subscriber<any>} run
+	 * @param {import('types/store').Invalidator<any>} invalidate
+	 * @returns {import('types/store').Unsubscriber}
 	 */
 	function subscribe(run, invalidate = noop) {
-		/** @type {SubscribeInvalidateTuple<T>} */
+		/** @type {import('types/store').SubscribeInvalidateTuple<any>} */
 		const subscriber = [run, invalidate];
 		subscribers.add(subscriber);
 		if (subscribers.size === 1) {
@@ -86,14 +81,13 @@ export function writable(value, start = noop) {
 }
 
 /**
- * @param {Stores} stores
+ * @param {import('types/store').Stores} stores
  * @param {Function} fn
- * @param {T} initial_value
- * @returns {import("/Users/elliottjohnson/dev/sveltejs/svelte/index.ts-to-jsdoc").Readable<T>}
+ * @param {any} initial_value
  */
 export function derived(stores, fn, initial_value) {
 	const single = !Array.isArray(stores);
-	/** @type {Array<Readable<any>>} */
+	/** @type {Array<import('types/store').Readable<any>>} */
 	const stores_array = single ? [stores] : stores;
 	if (!stores_array.every(Boolean)) {
 		throw new Error('derived() expects stores as input, got a falsy value');
@@ -145,10 +139,7 @@ export function derived(stores, fn, initial_value) {
 }
 
 /**
- * Takes a store and returns a new one derived from the old one that is readable.
- *
- * @param {Readable<T>} store  - store to make readonly
- * @returns {import("/Users/elliottjohnson/dev/sveltejs/svelte/index.ts-to-jsdoc").Readable<T>}
+ * @type {import('types/store').readonly}
  */
 export function readonly(store) {
 	return {
@@ -156,57 +147,4 @@ export function readonly(store) {
 	};
 }
 
-/**
- * Get the current value from a store by subscribing and immediately unsubscribing.
- * @param store readable
- */
 export { get_store_value as get };
-
-/**
- * @typedef {(value: T) => void} Subscriber
- * @template T
- */
-
-/** @typedef {() => void} Unsubscriber */
-
-/**
- * @typedef {(value: T) => T} Updater
- * @template T
- */
-
-/**
- * @typedef {(value?: T) => void} Invalidator
- * @template T
- */
-
-/**
- * @typedef {(
- * 	set: (value: T) => void,
- * 	update: (fn: Updater<T>) => void
- * ) => void | (() => void)} StartStopNotifier
- * @template T
- */
-
-/**
- * @typedef {[Subscriber<T>, Invalidator<T>]} SubscribeInvalidateTuple
- * @template T
- */
-
-/** @typedef {Readable<any> | [Readable<any>, ...Array<Readable<any>>] | Array<Readable<any>>} Stores */
-
-/**
- * @typedef {T extends Readable<infer U>
- * 	? U
- * 	: { [K in keyof T]: T[K] extends Readable<infer U> ? U : never }} StoresValues
- * @template T
- */
-
-/**
- * Readable interface for subscribing.
- * @typedef {Object} Readable
- */
-
-/**
- * Writable interface for both updating and subscribing.
- * @typedef {Object} Writable
- */

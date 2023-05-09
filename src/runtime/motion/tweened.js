@@ -45,18 +45,25 @@ function get_interpolator(a, b) {
 }
 
 /**
- * @param {T} value
- * @param {Options<T>} defaults
- * @returns {import("/Users/elliottjohnson/dev/sveltejs/svelte/tweened.ts-to-jsdoc").Tweened<T>}
+ * @template T
+ * @typedef {Object} Options
+ * @property {number} [delay]
+ * @property {number|((from:T,to:T)=>number)} [duration]
+ * @property {(t:number)=>number} [easing]
+ * @property {(a:T,b:T)=>(t:number)=>T} [interpolate]
+ */
+
+/**
+ * @type {import('types/motion').tweened}
  */
 export function tweened(value, defaults = {}) {
 	const store = writable(value);
-	/** @type {Task} */
+	/** @type {import('types/internal').Task} */
 	let task;
 	let target_value = value;
 	/**
-	 * @param {T} new_value
-	 * @param {Options<T>} opts
+	 * @param {any} new_value
+	 * @param {Options<any>} opts
 	 * @returns {any}
 	 */
 	function set(new_value, opts) {
@@ -95,7 +102,7 @@ export function tweened(value, defaults = {}) {
 				previous_task = null;
 			}
 			const elapsed = now - start;
-			if (elapsed > duration) {
+			if (elapsed > /** @type {number} */ (duration)) {
 				store.set((value = new_value));
 				return false;
 			}
@@ -111,17 +118,3 @@ export function tweened(value, defaults = {}) {
 		subscribe: store.subscribe
 	};
 }
-
-/**
- * @typedef {(target_value: T, value: T) => T} Updater
- * @template T
- */
-
-/**
- * @typedef {Object} Options
- * @property {number} [delay]
- * @property {number|((from:T,to:T)=>number)} [duration]
- * @property {(t:number)=>number} [easing]
- * @property {(a:T,b:T)=>(t:number)=>T} [interpolate]
- */
-/** @typedef {Object} Tweened */

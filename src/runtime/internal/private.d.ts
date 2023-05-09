@@ -1,4 +1,4 @@
-import type { AnimationConfig } from '../animate';
+import type { AnimationConfig } from 'types/animate';
 import type { Fragment, FragmentFactory } from './public';
 
 export type AnimationFn = (

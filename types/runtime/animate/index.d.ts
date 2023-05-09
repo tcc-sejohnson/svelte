@@ -1,4 +1,3 @@
-// todo: same as Transition, should it be shared?
 export interface AnimationConfig {
 	delay?: number;
 	duration?: number;
@@ -12,3 +11,15 @@ export interface FlipParams {
 	duration?: number | ((len: number) => number);
 	easing?: (t: number) => number;
 }
+
+export function flip(
+	node: Element,
+	{
+		from,
+		to
+	}: {
+		from: DOMRect;
+		to: DOMRect;
+	},
+	params?: FlipParams
+): AnimationConfig;

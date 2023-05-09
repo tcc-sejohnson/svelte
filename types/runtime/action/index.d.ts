@@ -39,7 +39,6 @@ export interface ActionReturn<
 	 */
 	$$_attributes?: Attributes;
 }
-
 /**
  * Actions are functions that are called when an element is created.
  * You can use this interface to type such actions.
@@ -70,7 +69,3 @@ export interface Action<
 			: [node: Node, parameter: Parameter]
 	): void | ActionReturn<Parameter, Attributes>;
 }
-
-// Implementation notes:
-// - undefined extends X instead of X extends undefined makes this work better with both strict and nonstrict mode
-// - [X] extends [never] is needed, X extends never would reduce the whole resulting type to never and not to one of the condition outcomes
